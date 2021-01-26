@@ -1,0 +1,10 @@
+.metadata
+.settings/
+build/
+.classpath
+.project
+
+*.war
+/bin1/
+java/build/**
+
