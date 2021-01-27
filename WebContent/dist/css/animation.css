@@ -1,0 +1,27 @@
+body {
+    background: #FAE055;
+    text-align: center;
+}
+
+h1, p {
+  font: 35px "adelle-sans", sans-serif;
+  color: rgba(0, 0, 0, 0.7);
+  margin-top: 60px;
+}
+
+p {
+  margin-top: -50px;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+svg {
+    display: block;
+    margin: 60px auto;
+    width: 80%;
+    max-width: 320px;
+    /*cursor: pointer;*/
+}
+#all-items {
+  opacity: 0;
+}

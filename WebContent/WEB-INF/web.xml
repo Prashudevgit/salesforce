@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+  <display-name>salesforce</display-name>
+  <welcome-file-list>
+    <welcome-file>login.jsp</welcome-file>
+  </welcome-file-list>
+  
+    <context-param>
+        <param-name>quartz:shutdown-on-unload</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>quartz:wait-on-shutdown</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>quartz:start-on-load</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+   <listener>
+        <listener-class>org.quartz.ee.servlet.QuartzInitializerListener</listener-class>
+   </listener>
+    <listener>
+        <listener-class>com.salesforce.web.QuartzJobListener</listener-class>
+   </listener>     
+  <listener>
+    <listener-class>com.salesforce.web.ExecutorContextListener</listener-class>
+  </listener>
+  
+  <!--  sequence of start up are : QuartzInitializerListener,  QuartzJobListener, ExecutorContextListener, ControllerServlet, JSONServlet-->
+  <servlet>
+    <servlet-name>ws</servlet-name>
+    <servlet-class>com.salesforce.web.ControllerServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>json</servlet-name>
+    <servlet-class>com.salesforce.web.JSONServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+ 
+  <!-- ExternalInterfaceServlet -->
+   <servlet>
+    <servlet-name>es</servlet-name>
+    <servlet-class>com.ppwallet.web.ExternalInterfaceServlet</servlet-class>
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+    <!-- MultipartServlet -->
+  <servlet>
+    <servlet-name>ms</servlet-name>
+    <servlet-class>com.salesforce.web.MultipartServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <!-- MultipartServlet -->
+    <servlet-name>ns</servlet-name>
+    <servlet-class>com.salesforce.web.MultipartServlet</servlet-class>
+    <load-on-startup>5</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>CaptchaImage</servlet-name>
+    <servlet-class>com.salesforce.web.CaptchaServlet</servlet-class>
+    <init-param>
+      <param-name>captcha-width</param-name>
+      <param-value>300</param-value>
+    </init-param>
+    <init-param>
+      <param-name>captcha-height</param-name>
+      <param-value>50</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ws</servlet-name>
+    <url-pattern>/ws/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>json</servlet-name>
+    <url-pattern>/json/*</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>es</servlet-name>
+    <url-pattern>/es/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ms</servlet-name>
+    <url-pattern>/ms/*</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>ns</servlet-name>
+    <url-pattern>/ns/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CaptchaImage</servlet-name>
+    <url-pattern>/captchaImage</url-pattern>
+  </servlet-mapping>
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+  <filter>
+    <filter-name>CorsFilter</filter-name>
+    <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+    <init-param>
+      <param-name>cors.allowed.origins</param-name>
+      <param-value>*</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.allowed.methods</param-name>
+      <param-value>GET,POST,PUT</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.allowed.headers</param-name>
+      <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Last-Modified</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.exposed.headers</param-name>
+      <param-value>*</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.support.credentials</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.preflight.maxage</param-name>
+      <param-value>180</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CorsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>
